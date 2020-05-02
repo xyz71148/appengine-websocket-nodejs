@@ -1,6 +1,6 @@
 version: mark21
 runtime: custom
-vm: true
+vm: flex
 api_version: 1
 
 manual_scaling:
