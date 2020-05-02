@@ -20,4 +20,4 @@ handlers:
   upload: public/index.html
 
 - url: /.*
-  script: server.js
+  script: app.js

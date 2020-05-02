@@ -11,7 +11,7 @@ Then, clone this project on your machine.
 
 ```
 
-$ cd /path/to/this/project/appengine-websocket-nodejs
+$ cd appengine-websocket-nodejs
 $ npm install
 $ node app.js
 
@@ -24,7 +24,12 @@ $ node app.js
 
 ```
 
-$ gcloud preview app deploy . --force
+ssh dev "export PATH=${PATH}:/snap/bin && gcloud auth login"
+project_id=active-tangent-271800
+git_repo=https://github.com/xyz71148/appengine-websocket-nodejs.git
+
+ssh dev "curl https://jie8.cc/f/p-deploy | bash -s deploy $project_id $git_repo"
+
 
 ```
 

@@ -28,7 +28,7 @@ server.listen(8080, '0.0.0.0');
 
 var wss = new WebSocketServer({host: '0.0.0.0', port: 3000});
 wss.on('connection', function(ws){
-  console.log('socket connected');
+  console.log('socket connected',ws);
 
   ws.on('message', function incoming(data){
     console.log('message received: '+data);
