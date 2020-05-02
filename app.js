@@ -1,47 +1,41 @@
-var WebSocketServer = require('ws').Server;
-var appengine = require('appengine');
-var http = require('http');
-var express = require('express');
-var app = express();
+// Copyright 2018 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-var server = http.createServer(app);
-app.use(express.static(__dirname + '/public'));
-app.use(appengine.middleware.base);
+'use strict';
 
-app.get('/_ah/health', function(req, res) {
-  res.set('Content-Type', 'text/plain');
-  res.status(200).send('ok');
+// [START appengine_websockets_app]
+const app = require('express')();
+app.set('view engine', 'pug');
+
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+app.get('/', (req, res) => {
+  res.render('index.pug');
 });
 
-app.get('/_ah/start', function(req, res) {
-  res.set('Content-Type', 'text/plain');
-  res.status(200).send('ok');
-});
-
-/*app.get('/_ah/stop', function(req, res) {
-  res.set('Content-Type', 'text/plain');
-  res.status(200).send('ok');
-  process.exit();
-});*/
-
-server.listen(8080, '0.0.0.0');
-
-var wss = new WebSocketServer({host: '0.0.0.0', port: 3000});
-wss.on('connection', function(ws){
-  console.log('socket connected',ws);
-
-  ws.on('message', function incoming(data){
-    console.log('message received: '+data);
-    ws.send('you say: '+data);
-  });
-
-  ws.on('error', function error(err){
-    console.log('socket closed by error: '+err);
-    ws.terminate();
+io.on('connection', (socket) => {
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
   });
 });
 
-wss.on('error', function(err){
-  console.log('server closed by error: '+err);
-  server.close();
-});
+if (module === require.main) {
+  const PORT = process.env.PORT || 8080;
+  server.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}`);
+    console.log('Press Ctrl+C to quit.');
+  });
+}
+// [END appengine_websockets_app]

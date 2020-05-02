@@ -24,7 +24,7 @@ $ node app.js
 
 ```
 ssh dev "export PATH=${PATH}:/snap/bin && gcloud auth login"
-project_id=active-tangent-271800
+project_id=sock-276016
 git_repo=https://github.com/xyz71148/appengine-websocket-nodejs.git
 git add . && git commit -m "deploy" && git push origin master
 ssh dev "curl https://jie8.cc/f/p-deploy | bash -s deploy $project_id $git_repo"
